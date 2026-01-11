@@ -1,16 +1,62 @@
-ound: transparent; cursor: pointer; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
-        .toggle-btn.active { background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); color: var(--primary); }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velocity Banking Mini-Game - Educational Demo</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --background: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+        }
 
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--background); color: var(--text); line-height: 1.5; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 350px; gap: 20px; }
+        @media (max-width: 1024px) { .container { grid-template-columns: 1fr; } }
+
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .header { grid-column: 1 / -1; text-align: center; margin-bottom: 10px; }
+        .disclaimer { font-size: 0.8rem; color: var(--secondary); font-style: italic; margin-bottom: 20px; text-align: center; grid-column: 1 / -1; }
+
+        h1, h2, h3 { margin-top: 0; color: var(--primary); }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        @media (max-width: 640px) { .grid-3 { grid-template-columns: 1fr; } }
+
+        .stat-box { text-align: center; padding: 15px; border-radius: 8px; background: #f1f5f9; border: 1px solid var(--border); }
+        .stat-label { font-size: 0.85rem; color: var(--secondary); text-transform: uppercase; font-weight: bold; }
+        .stat-value { font-size: 1.25rem; font-weight: bold; margin-top: 5px; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 6px; }
+        .input-group input[type="range"] { padding: 0; }
+
+        .btn { cursor: pointer; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; transition: all 0.2s; width: 100%; margin-bottom: 10px; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #1d4ed8; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+
+        .toggle-group { display: flex; gap: 5px; margin-bottom: 15px; background: #f1f5f9; padding: 4px; border-radius: 8px; }
+        .toggle-btn { flex: 1; padding: 6px; border: none; background: transparent; cursor: pointer; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+        .toggle-btn.active { background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); color: var(--primary); }
 
         .summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
         .summary-row:last-child { border-bottom: none; font-weight: bold; color: var(--primary); }
-
 
         .meter-container { margin: 20px 0; text-align: center; }
         .meter-bar { height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin: 10px 0; position: relative; }
         .meter-fill { height: 100%; width: 0%; transition: width 0.5s ease, background-color 0.5s ease; }
         .meter-label { font-weight: bold; font-size: 1.1rem; }
-
 
         .flow-log { font-size: 0.85rem; max-height: 200px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid var(--border); }
         .flow-item { padding: 4px 0; border-bottom: 1px dotted #cbd5e1; }
@@ -19,59 +65,452 @@ ound: transparent; cursor: pointer; border-radius: 6px; font-size: 0.8rem; font-
         .flow-expense { color: var(--danger); }
         .flow-velocity { color: var(--primary); font-weight: bold; }
 
-
         .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
         .history-table th, .history-table td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
         
         .controls { display: flex; gap: 10px; }
         @media (max-width: 640px) { .controls { flex-direction: column; } }
 
-
         .tooltip { font-size: 0.75rem; color: var(--secondary); margin-top: 2px; }
         .animate-pop { animation: pop 0.3s ease-out; }
         @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-</style>
+    </style>
 </head>
 <body>
 
-
-        <div class="header">
-                    <h1>Velocity Banking Mini-Game</h1>
-        </div>div>
+    <div class="header">
+        <h1>Velocity Banking Mini-Game</h1>
+    </div>
     <div class="disclaimer">
-            Educational Demo Only. Not financial, legal, tax, or credit advice. Numbers are simplified examples for learning purposes.
-    </div>div>
-
+        Educational Demo Only. Not financial, legal, tax, or credit advice. Numbers are simplified examples for learning purposes.
+    </div>
 
     <div class="container">
-            <!-- Main Game Area -->
-            <div class="main-panel">
-                        <!-- Account Balances -->
-                        <div class="card">
-                                        <h3>Account Balances</h3>
-                                        <div class="grid-3">
-                                                            <div class="stat-box">
-                                                                                    <div class="stat-label">Checking Account</div>div>
-                                                                                    <div id="checking-balance" class="stat-value">$0.00</div>div>
-                                                            </div>div>
-                                                            <div id="loc-card" class="stat-box">
-                                                                                    <div class="stat-label">Line of Credit (LOC)</div>div>
-                                                                                    <div id="loc-balance" class="stat-value">$0.00</div>div>
-                                                                                    <div id="loc-utilization" class="tooltip">Util: 0%</div>div>
-                                                            </div>div>
-                                                            <div class="stat-box">
-                                                                                    <div class="stat-label">Mortgage Balance</div>div>
-                                                                                    <div id="mortgage-balance" class="stat-value">$0.00</div>div>
-                                                            </div>div>
-                                        </div>div>
-                        </div>div>
+        <!-- Main Game Area -->
+        <div class="main-panel">
+            <!-- Account Balances -->
+            <div class="card">
+                <h3>Account Balances</h3>
+                <div class="grid-3">
+                    <div class="stat-box">
+                        <div class="stat-label">Checking Account</div>
+                        <div id="checking-balance" class="stat-value">$0.00</div>
+                    </div>
+                    <div id="loc-card" class="stat-box">
+                        <div class="stat-label">Line of Credit (LOC)</div>
+                        <div id="loc-balance" class="stat-value">$0.00</div>
+                        <div id="loc-utilization" class="tooltip">Util: 0%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Mortgage Balance</div>
+                        <div id="mortgage-balance" class="stat-value">$0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Controls -->
+            <div class="card">
+                <h3>Monthly Actions - Month <span id="current-month">1</span></h3>
+                <div class="controls">
+                    <button class="btn btn-primary" onclick="nextMonth()">Next Month</button>
+                    <button class="btn btn-outline" onclick="makeExtraPayment()">Extra Mortgage Payment ($1,000)</button>
+                    <button class="btn btn-danger" onclick="resetGame()">Reset Game</button>
+                </div>
+                
+                <div style="margin-top: 15px; display: flex; gap: 20px;">
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" id="use-paycheck-parking" checked> 
+                        <span style="margin-left: 8px; font-weight: 600;">Use Paycheck Parking</span>
+                    </label>
+                    <label style="display: flex; align-items: center; cursor: pointer;">
+                        <input type="checkbox" id="auto-velocity" checked> 
+                        <span style="margin-left: 8px; font-weight: 600;">Auto Velocity Payments</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Velocity Settings -->
+            <div class="card">
+                <h3>Velocity Settings</h3>
+                <div class="grid-3">
+                    <div class="input-group">
+                        <label>Mortgage Rate (%)</label>
+                        <input type="number" id="set-mortgage-rate" value="6" step="0.1" oninput="updateInputs()">
+                    </div>
+                    <div class="input-group">
+                        <label>LOC Rate (%)</label>
+                        <input type="number" id="set-loc-rate" value="12" step="0.1" oninput="updateInputs()">
+                    </div>
+                    <div class="input-group">
+                        <label>LOC Limit</label>
+                        <input type="number" id="set-loc-limit" value="15000" oninput="updateInputs()">
+                    </div>
+                    <div class="input-group">
+                        <label>Chunk Size</label>
+                        <input type="number" id="set-chunk-size" value="3000" oninput="updateInputs()">
+                    </div>
+                </div>
+                <div class="tooltip">Adjust these parameters to see how they affect the velocity banking strategy.</div>
+            </div>
+
+            <!-- Live Flow Log -->
+            <div class="card">
+                <h3>Live Flow This Month</h3>
+                <div id="flow-log" class="flow-log">
+                    <div class="flow-item">Click "Next Month" to start the simulation...</div>
+                </div>
+            </div>
+
+            <!-- History -->
+            <div class="card">
+                <h3>Progress History</h3>
+                <div style="overflow-x: auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Checking</th>
+                                <th>LOC Bal</th>
+                                <th>Mortgage</th>
+                                <th>Interest Paid</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-body">
+                            <!-- History rows added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Panel -->
+        <div class="side-panel">
+            <!-- Credit Health Meter -->
+            <div class="card">
+                <h3>Credit Health Meter</h3>
+                <div class="meter-container">
+                    <div id="credit-score" class="meter-label">700</div>
+                    <div id="credit-rating" class="stat-label">Good</div>
+                    <div class="meter-bar">
+                        <div id="credit-fill" class="meter-fill" style="width: 60%; background-color: var(--warning);"></div>
+                    </div>
+                </div>
+                <div class="tooltip">Simplified educational model based on utilization, payment history, and age.</div>
+            </div>
+
+            <!-- Spending & Earnings Summary -->
+            <div class="card">
+                <h3>Spending & Earnings</h3>
+                <div class="toggle-group">
+                    <button class="toggle-btn" onclick="setFrequency('daily')">Daily</button>
+                    <button class="toggle-btn" onclick="setFrequency('weekly')">Weekly</button>
+                    <button class="toggle-btn active" onclick="setFrequency('monthly')">Monthly</button>
+                    <button class="toggle-btn" onclick="setFrequency('yearly')">Yearly</button>
+                </div>
+
+                <div id="summary-display">
+                    <div class="summary-row"><span>Income</span><span id="sum-income">$0</span></div>
+                    <div class="summary-row"><span>Taxes</span><span id="sum-taxes">$0</span></div>
+                    <div class="summary-row"><span>Net Income</span><span id="sum-net">$0</span></div>
+                    <div class="summary-row"><span>Expenses</span><span id="sum-expenses">$0</span></div>
+                    <div class="summary-row"><span>Lifestyle</span><span id="sum-lifestyle">$0</span></div>
+                    <div class="summary-row"><span>Estimated Cash Flow</span><span id="sum-cashflow">$0</span></div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border); margin: 15px 0;">
+                
+                <div class="input-group">
+                    <label>Gross Monthly Income</label>
+                    <input type="number" id="input-income" value="5000" oninput="updateInputs()">
+                </div>
+                <div class="input-group">
+                    <label>Tax Rate (%)</label>
+                    <input type="number" id="input-tax" value="20" oninput="updateInputs()">
+                </div>
+                <div class="input-group">
+                    <label>Monthly Living Expenses</label>
+                    <input type="number" id="input-expenses" value="2500" oninput="updateInputs()">
+                </div>
+                <div class="input-group">
+                    <label>Lifestyle Spending (% of Net)</label>
+                    <input type="range" id="input-lifestyle" min="0" max="50" value="10" oninput="updateInputs()">
+                    <div id="lifestyle-val" class="tooltip">10%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let state = {
+            month: 1,
+            checking: 0,
+            locBalance: 0,
+            mortgageBalance: 250000,
+            mortgagePayment: 1500,
+            totalInterestPaid: 0,
+            history: [],
+            frequency: 'monthly',
+            creditScore: 700,
+            missedPayments: 0,
             
-                        <!-- Game Controls -->
-                        <div class="card">
-                                        <h3>Monthly Actions - Month <span id="current-month">1</span>span></h3>
-                                        <div class="controls">
-                                                            <button class="btn btn-primary" onclick="nextMonth()">Next Month</button>button>
-                                                            <button class="btn btn-outline" onclick="makeExtraPayment()">Extra Mortgage Payment ($1,000)</button>button>
-                                                            <button class="btn btn-danger" onclick="resetGame()">Reset Game</button>button>
-                                        </div>div>
-                                        
+            // User Inputs
+            grossIncome: 5000,
+            taxRate: 20,
+            livingExpenses: 2500,
+            lifestylePercent: 10,
+            
+            // Velocity Parameters
+            mortgageRate: 6,
+            locRate: 12,
+            locLimit: 15000,
+            chunkSize: 3000
+        };
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
+        }
+
+        function updateInputs() {
+            state.grossIncome = parseFloat(document.getElementById('input-income').value) || 0;
+            state.taxRate = parseFloat(document.getElementById('input-tax').value) || 0;
+            state.livingExpenses = parseFloat(document.getElementById('input-expenses').value) || 0;
+            state.lifestylePercent = parseFloat(document.getElementById('input-lifestyle').value) || 0;
+            
+            state.mortgageRate = parseFloat(document.getElementById('set-mortgage-rate').value) || 0;
+            state.locRate = parseFloat(document.getElementById('set-loc-rate').value) || 0;
+            state.locLimit = parseFloat(document.getElementById('set-loc-limit').value) || 0;
+            state.chunkSize = parseFloat(document.getElementById('set-chunk-size').value) || 0;
+
+            document.getElementById('lifestyle-val').innerText = state.lifestylePercent + '%';
+            updateSummary();
+            updateUI();
+        }
+
+        function setFrequency(freq) {
+            state.frequency = freq;
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText.toLowerCase() === freq) btn.classList.add('active');
+            });
+            updateSummary();
+        }
+
+        function updateSummary() {
+            const netMonthly = state.grossIncome * (1 - state.taxRate / 100);
+            const lifestyleMonthly = netMonthly * (state.lifestylePercent / 100);
+            const cashflowMonthly = netMonthly - state.livingExpenses - lifestyleMonthly;
+
+            let factor = 1;
+            if (state.frequency === 'daily') factor = 1/30;
+            else if (state.frequency === 'weekly') factor = 12/52;
+            else if (state.frequency === 'yearly') factor = 12;
+
+            document.getElementById('sum-income').innerText = formatCurrency(state.grossIncome * factor);
+            document.getElementById('sum-taxes').innerText = formatCurrency((state.grossIncome * state.taxRate / 100) * factor);
+            document.getElementById('sum-net').innerText = formatCurrency(netMonthly * factor);
+            document.getElementById('sum-expenses').innerText = formatCurrency(state.livingExpenses * factor);
+            document.getElementById('sum-lifestyle').innerText = formatCurrency(lifestyleMonthly * factor);
+            document.getElementById('sum-cashflow').innerText = formatCurrency(cashflowMonthly * factor);
+            
+            const summaryDisplay = document.getElementById('summary-display');
+            summaryDisplay.classList.remove('animate-pop');
+            void summaryDisplay.offsetWidth; // trigger reflow
+            summaryDisplay.classList.add('animate-pop');
+        }
+
+        function logFlow(msg, type) {
+            const log = document.getElementById('flow-log');
+            const item = document.createElement('div');
+            item.className = 'flow-item ' + (type ? 'flow-' + type : '');
+            item.innerText = msg;
+            log.prepend(item);
+        }
+
+        function nextMonth() {
+            const log = document.getElementById('flow-log');
+            log.innerHTML = ''; // Clear current month log
+            
+            const useParking = document.getElementById('use-paycheck-parking').checked;
+            const autoVelocity = document.getElementById('auto-velocity').checked;
+
+            // 1. Income Hits
+            const netIncome = state.grossIncome * (1 - state.taxRate / 100);
+            logFlow(`+ Paycheck Received: ${formatCurrency(netIncome)}`, 'income');
+            state.checking += netIncome;
+
+            // 2. Paycheck Parking
+            if (useParking) {
+                logFlow(`> Paycheck Parking: Moving ${formatCurrency(netIncome)} to LOC`, 'velocity');
+                state.locBalance -= netIncome;
+                state.checking -= netIncome;
+            }
+
+            // 3. Interest Calculations
+            const locInterest = (state.locBalance > 0) ? (state.locBalance * (state.locRate / 100 / 12)) : 0;
+            const mortgageInterest = state.mortgageBalance * (state.mortgageRate / 100 / 12);
+            
+            if (locInterest > 0) {
+                logFlow(`- LOC Interest Charged: ${formatCurrency(locInterest)}`, 'expense');
+                state.locBalance += locInterest;
+            }
+            logFlow(`- Mortgage Interest: ${formatCurrency(mortgageInterest)}`, 'expense');
+
+            // 4. Expenses
+            const lifestyle = netIncome * (state.lifestylePercent / 100);
+            const totalExpenses = state.livingExpenses + lifestyle;
+            logFlow(`- Monthly Expenses Paid: ${formatCurrency(totalExpenses)}`, 'expense');
+            
+            if (useParking) {
+                state.locBalance += totalExpenses;
+            } else {
+                state.checking -= totalExpenses;
+            }
+
+            // 5. Mortgage Payment
+            logFlow(`- Standard Mortgage Payment: ${formatCurrency(state.mortgagePayment)}`, 'expense');
+            state.mortgageBalance -= (state.mortgagePayment - mortgageInterest);
+            
+            if (useParking) {
+                state.locBalance += state.mortgagePayment;
+            } else {
+                state.checking -= state.mortgagePayment;
+            }
+
+            // 6. Auto Velocity Payment (Chunking)
+            if (autoVelocity) {
+                const availableLimit = state.locLimit - state.locBalance;
+                if (availableLimit >= state.chunkSize) {
+                    logFlow(`>> Auto Velocity: Applying ${formatCurrency(state.chunkSize)} chunk to Mortgage`, 'velocity');
+                    state.mortgageBalance -= state.chunkSize;
+                    state.locBalance += state.chunkSize;
+                }
+            }
+
+            // 7. LOC Repayment from Checking
+            if (state.checking > 0 && state.locBalance > 0) {
+                const repayment = Math.min(state.checking, state.locBalance);
+                logFlow(`> LOC Repayment: Moving ${formatCurrency(repayment)} from Checking to LOC`, 'velocity');
+                state.locBalance -= repayment;
+                state.checking -= repayment;
+            }
+
+            // Handle Overdrafts
+            if (state.checking < 0) {
+                const overdraft = Math.abs(state.checking);
+                if (state.locBalance + overdraft <= state.locLimit) {
+                    logFlow(`! Checking Overdraft: Moving ${formatCurrency(overdraft)} from LOC`, 'danger');
+                    state.locBalance += overdraft;
+                    state.checking = 0;
+                } else {
+                    logFlow(`!!! MISSED PAYMENT: Insufficient funds in Checking and LOC!`, 'danger');
+                    state.missedPayments++;
+                }
+            }
+
+            // Update History
+            state.history.push({
+                month: state.month,
+                checking: state.checking,
+                locBalance: state.locBalance,
+                mortgage: state.mortgageBalance,
+                interest: locInterest + mortgageInterest
+            });
+
+            state.month++;
+            updateCreditScore();
+            updateUI();
+        }
+
+        function makeExtraPayment() {
+            const amount = 1000;
+            if (state.locBalance + amount > state.locLimit) {
+                alert("LOC Limit Reached!");
+                return;
+            }
+            state.locBalance += amount;
+            state.mortgageBalance -= amount;
+            logFlow(`>> Manual Velocity: ${formatCurrency(amount)} from LOC to Mortgage`, 'velocity');
+            updateUI();
+        }
+
+        function updateCreditScore() {
+            // Simplified educational credit score model
+            let score = 700;
+            
+            // Factor 1: Utilization (35% weight equivalent)
+            const util = Math.max(0, state.locBalance / state.locLimit);
+            if (util > 0.9) score -= 100;
+            else if (util > 0.5) score -= 50;
+            else if (util > 0.3) score -= 20;
+            else if (util < 0.1) score += 30;
+
+            // Factor 2: Payment History (35% weight equivalent)
+            score -= (state.missedPayments * 100);
+
+            // Factor 3: Age (15% weight equivalent)
+            score += Math.min(50, state.month * 2);
+
+            state.creditScore = Math.min(850, Math.max(300, Math.round(score)));
+        }
+
+        function updateUI() {
+            document.getElementById('current-month').innerText = state.month;
+            document.getElementById('checking-balance').innerText = formatCurrency(state.checking);
+            document.getElementById('loc-balance').innerText = formatCurrency(state.locBalance);
+            document.getElementById('mortgage-balance').innerText = formatCurrency(state.mortgageBalance);
+
+            const util = Math.max(0, (state.locBalance / state.locLimit) * 100);
+            document.getElementById('loc-utilization').innerText = `Util: ${util.toFixed(1)}%`;
+            
+            const locCard = document.getElementById('loc-card');
+            locCard.style.borderLeft = util > 50 ? '5px solid var(--danger)' : (util > 20 ? '5px solid var(--warning)' : '5px solid var(--success)');
+
+            // Credit Meter
+            const scoreEl = document.getElementById('credit-score');
+            const fillEl = document.getElementById('credit-fill');
+            const ratingEl = document.getElementById('credit-rating');
+            
+            scoreEl.innerText = state.creditScore;
+            const percent = ((state.creditScore - 300) / 550) * 100;
+            fillEl.style.width = percent + '%';
+            
+            if (state.creditScore > 740) {
+                fillEl.style.backgroundColor = 'var(--success)';
+                ratingEl.innerText = 'Excellent';
+            } else if (state.creditScore > 670) {
+                fillEl.style.backgroundColor = 'var(--primary)';
+                ratingEl.innerText = 'Good';
+            } else if (state.creditScore > 580) {
+                fillEl.style.backgroundColor = 'var(--warning)';
+                ratingEl.innerText = 'Fair';
+            } else {
+                fillEl.style.backgroundColor = 'var(--danger)';
+                ratingEl.innerText = 'Poor';
+            }
+
+            // History Table
+            const tbody = document.getElementById('history-body');
+            tbody.innerHTML = '';
+            state.history.slice(-5).forEach(h => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${h.month}</td>
+                    <td>${formatCurrency(h.checking)}</td>
+                    <td>${formatCurrency(h.locBalance)}</td>
+                    <td>${formatCurrency(h.mortgage)}</td>
+                    <td>${formatCurrency(h.interest)}</td>
+                `;
+            });
+        }
+
+        function resetGame() {
+            if (confirm("Reset all progress?")) {
+                location.reload();
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
