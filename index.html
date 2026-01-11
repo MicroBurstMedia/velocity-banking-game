@@ -1,4 +1,77 @@
-<!DOCTYPE html>
+ound: transparent; cursor: pointer; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+        .toggle-btn.active { background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.1); color: var(--primary); }
+
+        .summary-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .summary-row:last-child { border-bottom: none; font-weight: bold; color: var(--primary); }
+
+        .meter-container { margin: 20px 0; text-align: center; }
+        .meter-bar { height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin: 10px 0; position: relative; }
+        .meter-fill { height: 100%; width: 0%; transition: width 0.5s ease, background-color 0.5s ease; }
+        .meter-label { font-weight: bold; font-size: 1.1rem; }
+
+        .flow-log { font-size: 0.85rem; max-height: 200px; overflow-y: auto; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid var(--border); }
+        .flow-item { padding: 4px 0; border-bottom: 1px dotted #cbd5e1; }
+        .flow-item:last-child { border-bottom: none; }
+        .flow-income { color: var(--success); }
+        .flow-expense { color: var(--danger); }
+        .flow-velocity { color: var(--primary); font-weight: bold; }
+
+        .history-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+        .history-table th, .history-table td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+        
+        .controls { display: flex; gap: 10px; }
+        @media (max-width: 640px) { .controls { flex-direction: column; } }
+
+        .tooltip { font-size: 0.75rem; color: var(--secondary); margin-top: 2px; }
+        .animate-pop { animation: pop 0.3s ease-out; }
+        @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+</style>
+</head>
+<body>
+
+        <div class="header">
+                    <h1>Velocity Banking Mini-Game</h1>
+        </div>div>
+    <div class="disclaimer">
+            Educational Demo Only. Not financial, legal, tax, or credit advice. Numbers are simplified examples for learning purposes.
+    </div>div>
+
+    <div class="container">
+            <!-- Main Game Area -->
+            <div class="main-panel">
+                        <!-- Account Balances -->
+                        <div class="card">
+                                        <h3>Account Balances</h3>
+                                        <div class="grid-3">
+                                                            <div class="stat-box">
+                                                                                    <div class="stat-label">Checking Account</div>div>
+                                                                                    <div id="checking-balance" class="stat-value">$0.00</div>div>
+                                                            </div>div>
+                                                            <div id="loc-card" class="stat-box">
+                                                                                    <div class="stat-label">Line of Credit (LOC)</div>div>
+                                                                                    <div id="loc-balance" class="stat-value">$0.00</div>div>
+                                                                                    <div id="loc-utilization" class="tooltip">Util: 0%</div>div>
+                                                            </div>div>
+                                                            <div class="stat-box">
+                                                                                    <div class="stat-label">Mortgage Balance</div>div>
+                                                                                    <div id="mortgage-balance" class="stat-value">$0.00</div>div>
+                                                            </div>div>
+                                        </div>div>
+                        </div>div>
+            
+                        <!-- Game Controls -->
+                        <div class="card">
+                                        <h3>Monthly Actions - Month <span id="current-month">1</span>span></h3>
+                                        <div class="controls">
+                                                            <button class="btn btn-primary" onclick="nextMonth()">Next Month</button>button>
+                                                            <button class="btn btn-outline" onclick="makeExtraPayment()">Extra Mortgage Payment ($1,000)</button>button>
+                                                            <button class="btn btn-danger" onclick="resetGame()">Reset Game</button>button>
+                                        </div>div>
+                                        
+                                        <div style="margin-top: 15px; display: flex; gap: 20px;">
+                                                            <label style="display: flex; align-items: center; cursor: pointer;">
+                                                                                    <input typ</h3></h1>
+</body><!DOCTYPE html>
 <html lang="en">
     <head>
             <meta charset="UTF-8">
