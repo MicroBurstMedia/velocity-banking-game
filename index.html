@@ -2,210 +2,220 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Velocity Banking Adventure</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velocity Banking Game Demo</title>
 
 <style>
-:root {
-  --primary:#2563eb;
-  --success:#22c55e;
-  --warning:#f59e0b;
-  --danger:#ef4444;
-  --bg:#f8fafc;
-  --card:#ffffff;
-  --border:#e2e8f0;
-  --text:#1e293b;
+body {
+  font-family: Arial, sans-serif;
+  background:#0f172a;
+  color:white;
+  padding:20px;
 }
 
-*{box-sizing:border-box;font-family:Segoe UI,Arial}
-body{margin:0;background:var(--bg);color:var(--text);padding:20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:15px;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-button{cursor:pointer;padding:10px 16px;border:none;border-radius:8px;font-weight:bold}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-success{background:var(--success);color:#fff}
-.btn-warning{background:var(--warning);color:#fff}
-.btn-danger{background:var(--danger);color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-.center{text-align:center}
-.hidden{display:none}
-.progress{height:12px;background:#e5e7eb;border-radius:6px;overflow:hidden}
-.progress-fill{height:100%;background:var(--success);width:0%;transition:.4s}
-.log{max-height:180px;overflow:auto;font-size:.85rem}
-.log div{padding:4px 0;border-bottom:1px dotted #cbd5e1}
-.badge{display:inline-block;padding:6px 10px;border-radius:20px;background:#e0f2fe;color:#0369a1;font-size:.75rem;margin:4px}
+h1,h2 {
+  color:#38bdf8;
+}
+
+.panel {
+  background:#020617;
+  border:1px solid #334155;
+  border-radius:8px;
+  padding:15px;
+  margin-bottom:15px;
+}
+
+input, select, button {
+  padding:8px;
+  margin:5px 0;
+}
+
+button {
+  background:#38bdf8;
+  border:none;
+  cursor:pointer;
+}
+
+button:hover {
+  background:#0ea5e9;
+}
+
+.good { color:#22c55e; }
+.warn { color:#facc15; }
+.bad { color:#ef4444; }
+
+.chat {
+  background:#020617;
+  border:1px solid #334155;
+  padding:10px;
+  height:120px;
+  overflow:auto;
+  margin-bottom:5px;
+}
+
+.flow span {
+  display:inline-block;
+  background:#1e293b;
+  padding:6px 10px;
+  border-radius:5px;
+  margin:3px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- MODE SELECT -->
-<div id="modeScreen" class="card center">
-<h1>Velocity Banking Adventure</h1>
-<p>Select Your Mode</p>
-<button class="btn-primary" onclick="startGame('kids')">Kids Mode</button>
-<button class="btn-success" onclick="startGame('teen')">Teen Mode</button>
-<button class="btn-warning" onclick="startGame('adult')">Adult Mode</button>
-<p style="font-size:.8rem;margin-top:10px">Educational Demo • No Financial Advice</p>
+<h1>🎮 Velocity Banking Simulator</h1>
+<p>Educational Financial Strategy Game (Demo)</p>
+
+<!-- PROFILE -->
+<div class="panel">
+<h2>💾 Player Profile</h2>
+<input id="name" placeholder="Player Name">
+<button onclick="saveProfile()">Save</button>
+<button onclick="loadProfile()">Load</button>
 </div>
 
-<!-- GAME -->
-<div id="game" class="hidden">
-
-<div class="card center">
-<h2 id="modeTitle"></h2>
-<div>Month: <span id="month">1</span> | Level: <span id="level">1</span> | XP: <span id="xp">0</span></div>
-<div class="progress"><div id="xpBar" class="progress-fill"></div></div>
+<!-- GAME SETTINGS -->
+<div class="panel">
+<h2>🧪 Sandbox Mode</h2>
+<select id="mode">
+  <option value="normal">Normal</option>
+  <option value="sandbox">Sandbox (No Limits)</option>
+  <option value="classroom">Classroom Edition</option>
+</select>
 </div>
 
-<div class="grid">
-<div class="card">
-<h3>Accounts</h3>
-<p>Checking: <b id="checking">$0</b></p>
-<p>LOC: <b id="loc">$0</b></p>
-<p>Mortgage: <b id="mortgage">$250,000</b></p>
+<!-- FINANCIAL INPUT -->
+<div class="panel">
+<h2>💳 Accounts</h2>
+
+<label>Income:</label><br>
+<input type="number" id="income" value="5000"><br>
+
+<label>Expenses:</label><br>
+<input type="number" id="expenses" value="3000"><br>
+
+<label>Credit Card Balance:</label><br>
+<input type="number" id="cc" value="10000"><br>
+
+<label>PLOC Balance:</label><br>
+<input type="number" id="ploc" value="0"><br>
+
+<button onclick="runMonth()">Run Month</button>
 </div>
 
-<div class="card">
-<h3>Mentor Says 🐱</h3>
-<p id="mentorText">Welcome! Let's learn money the fun way.</p>
+<!-- RESULTS -->
+<div class="panel">
+<h2>📊 Results</h2>
+<p id="result"></p>
+<p id="creditScore"></p>
 </div>
 
-<div class="card">
-<h3>Actions</h3>
-<button class="btn-primary" onclick="nextMonth()">Next Month</button>
-<button class="btn-success" onclick="velocityMove()">Velocity Move</button>
-<button class="btn-danger" onclick="resetGame()">Reset</button>
-</div>
-</div>
-
-<div class="card">
-<h3>Live Events</h3>
-<div id="log" class="log"></div>
+<!-- STRATEGY -->
+<div class="panel">
+<h2>📊 Strategy Comparison</h2>
+<p>Traditional: Slow payoff, more interest</p>
+<p>Velocity Banking: Faster payoff, interest savings</p>
+<p>PLOC Strategy: Hybrid liquidity + control</p>
 </div>
 
-<div class="card">
-<h3>Achievements</h3>
-<div id="badges"></div>
+<!-- AI MENTOR -->
+<div class="panel">
+<h2>🧠 AI Mentor</h2>
+<div class="chat" id="chat"></div>
+<input id="question" placeholder="Ask the mentor...">
+<button onclick="mentor()">Ask</button>
 </div>
 
+<!-- INTERLINK METHOD -->
+<div class="panel">
+<h2>🌐 Interlink Method™ Flow Demo</h2>
+<div class="flow">
+<span>Social Traffic</span> ➜
+<span>Landing Page</span> ➜
+<span>Game Demo</span> ➜
+<span>Strategy</span> ➜
+<span>Checkout</span>
+</div>
 </div>
 
 <script>
-let state={
- mode:"",
- month:1,
- checking:0,
- loc:0,
- mortgage:250000,
- xp:0,
- level:1,
- income:5000,
- expenses:2500,
- locLimit:15000,
- chunk:3000,
- achievements:{}
-};
+let creditScore = 650;
 
-function startGame(mode){
-state.mode=mode;
-document.getElementById("modeScreen").classList.add("hidden");
-document.getElementById("game").classList.remove("hidden");
-document.getElementById("modeTitle").innerText=mode.toUpperCase()+" MODE";
-mentor(`Welcome to ${mode} mode!`);
+function runMonth() {
+  let income = Number(incomeEl.value);
+  let expenses = Number(expensesEl.value);
+  let cc = Number(ccEl.value);
+  let ploc = Number(plocEl.value);
+
+  let surplus = income - expenses;
+
+  if (surplus > 0) {
+    ploc += surplus;
+    cc -= surplus;
+    creditScore += 5;
+  } else {
+    creditScore -= 10;
+  }
+
+  if (cc < 0) cc = 0;
+
+  ccEl.value = cc;
+  plocEl.value = ploc;
+
+  result.innerHTML = `
+    CC Balance: $${cc}<br>
+    PLOC Balance: $${ploc}
+  `;
+
+  creditScoreEl();
 }
 
-function mentor(msg){
-document.getElementById("mentorText").innerText=msg;
+function creditScoreEl() {
+  let rating = creditScore > 720 ? "Excellent" :
+               creditScore > 680 ? "Good" :
+               creditScore > 620 ? "Fair" : "Poor";
+
+  creditScoreP.innerHTML =
+    `Credit Score: <strong>${creditScore}</strong> (${rating})`;
 }
 
-function log(msg){
-const l=document.getElementById("log");
-const d=document.createElement("div");
-d.innerText=msg;
-l.prepend(d);
+function mentor() {
+  let q = question.value.toLowerCase();
+  let reply = "Think long-term and control cash flow.";
+
+  if (q.includes("velocity")) reply = "Velocity banking accelerates debt payoff using income flow.";
+  if (q.includes("ploc")) reply = "PLOC adds flexibility without locking funds.";
+  if (q.includes("credit")) reply = "Low utilization improves credit score.";
+
+  chat.innerHTML += `<p>🧠 ${reply}</p>`;
+  question.value = "";
 }
 
-function gainXP(x){
-state.xp+=x;
-if(state.xp>=100){
-state.level++;
-state.xp=0;
-mentor("LEVEL UP! You're getting smarter!");
-}
-updateUI();
+function saveProfile() {
+  localStorage.setItem("profile", JSON.stringify({
+    name: name.value,
+    income: incomeEl.value,
+    expenses: expensesEl.value
+  }));
 }
 
-function nextMonth(){
-state.month++;
-state.checking+=state.income;
-log("+ Income received");
-state.checking-=state.expenses;
-log("- Expenses paid");
-
-const interest=state.mortgage*0.005;
-state.mortgage-=1000;
-log("- Mortgage payment");
-
-randomEvent();
-gainXP(20);
-updateUI();
-
-if(state.mortgage<=0){
-mentor("YOU WON! Mortgage destroyed!");
-alert("🏆 You Win!");
-}
+function loadProfile() {
+  let data = JSON.parse(localStorage.getItem("profile"));
+  if (!data) return;
+  name.value = data.name;
+  incomeEl.value = data.income;
+  expensesEl.value = data.expenses;
 }
 
-function velocityMove(){
-if(state.loc+state.chunk>state.locLimit){
-mentor("LOC limit reached!");
-return;
-}
-state.loc+=state.chunk;
-state.mortgage-=state.chunk;
-log(">> Velocity move applied!");
-gainXP(30);
-checkAchievement("First Velocity");
-updateUI();
-}
-
-function randomEvent(){
-const events=[
-"Car repair bill!",
-"Bonus income!",
-"Unexpected bill!",
-"Side hustle success!"
-];
-const e=events[Math.floor(Math.random()*events.length)];
-log("⚡ Event: "+e);
-if(e.includes("Bonus")) state.checking+=1000;
-if(e.includes("bill")) state.checking-=800;
-}
-
-function checkAchievement(name){
-if(state.achievements[name]) return;
-state.achievements[name]=true;
-const b=document.createElement("span");
-b.className="badge";
-b.innerText=name;
-document.getElementById("badges").appendChild(b);
-}
-
-function updateUI(){
-document.getElementById("month").innerText=state.month;
-document.getElementById("level").innerText=state.level;
-document.getElementById("xp").innerText=state.xp;
-document.getElementById("xpBar").style.width=state.xp+"%";
-document.getElementById("checking").innerText="$"+state.checking.toFixed(0);
-document.getElementById("loc").innerText="$"+state.loc.toFixed(0);
-document.getElementById("mortgage").innerText="$"+state.mortgage.toFixed(0);
-}
-
-function resetGame(){
-location.reload();
-}
+// Shortcuts
+const incomeEl = document.getElementById("income");
+const expensesEl = document.getElementById("expenses");
+const ccEl = document.getElementById("cc");
+const plocEl = document.getElementById("ploc");
+const result = document.getElementById("result");
+const creditScoreP = document.getElementById("creditScore");
 </script>
 
 </body>
 </html>
-
